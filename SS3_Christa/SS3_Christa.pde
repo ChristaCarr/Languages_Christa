@@ -2,6 +2,7 @@
 // move mouse to draw with circle brush
 //click and drag to draw with square brush
 //opposite sides of the sketch have different strokes
+///comment
 
 float r = 0;
 float g =0;
