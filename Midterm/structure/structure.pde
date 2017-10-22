@@ -10,6 +10,21 @@ PShape pink2;
 PShape pink3;
 PFont font;
 
+//Feed Variables
+float foodfall = -50;
+float fooddrift = random(490,510);
+
+//Play Mode Variables
+float x;
+float fishX = mouseX; 
+float fishY = 450; //height of fish png should = 350px
+float y = -70;
+
+//variables for our timer
+int timer1= 10000; //10 second timer
+int timer2= 35000; //35 second timer
+int currentTime=0;
+
 PImage watertank;
 
 //Naming processing variables
@@ -23,6 +38,56 @@ int move2 = 0;
 
 //creating game states
 String state = "title screen";
+
+//creating ball bounce function
+void ballbounce () {
+background(255);
+fill(0);
+ellipse (x , y, 50, 50);
+
+//movement of ball
+if (y <= fishY) {
+  y=y+6;
+}else if (x >= (mouseX - 75) && x <= (mouseX+ 75)) {
+  y=y*-1;
+}else {
+  y=y+6;
+}
+
+// random ball drop
+if (y <= -70) {
+  x = random(50,750);
+}
+// if you miss one it's game over
+if (y >= 750) {
+state = "game over";
+}  
+// After 30 seconds the game is done
+if (currentTime>timer2) {
+  state = "finish game";
+}
+}
+
+
+//creating food function
+void feed (int x, int y) {
+ fill( #D18F26, 255);
+  if ( foodfall >= 450) {
+  fill(#D18F26, 0);
+ }else if (foodfall >=425) {
+  fill(#D18F26, 100); 
+ }else if (foodfall >= 400) {
+  fill (#D18F26, 200); 
+ } 
+ 
+ if (foodfall>450) {
+  foodfall = foodfall*-1;
+ }
+ float fooddrift = random(497,503);
+ ellipse (fooddrift+x,foodfall+y,30,30); 
+ foodfall= foodfall +1;
+ }
+
 
 void setup () { 
  size(800,800);
@@ -46,6 +111,7 @@ void setup () {
 
 void draw () {
   if (state== "title screen") {
+    cursor(HAND);
     background(0);
     fill(255);
     text( "TITLE", width/2, height/3);
@@ -95,6 +161,15 @@ void draw () {
     text("PLAY", 75, 410);
     text("CLEAN", 75,610);
     text("BACK", 75,60);
+    
+    //food drop 
+    if (state == "purple main" && mouseX > 50 && mouseX < 150 && mouseY > 450 && mouseY <550 && mousePressed == true) {
+     fill(#D18F26);
+     feed (50,0);
+     feed (-50, -25);
+     feed (0, -70);
+     }
+     //feed purple fish
     
     //rollover
     if (mouseX > 50 && mouseX < 150 && mouseY > 40 && mouseY <80) {
@@ -189,7 +264,14 @@ void draw () {
       rect(100,600,100,50);    
     }
   
-    
+    //food drop 
+    if (state == "blue main" && mouseX > 50 && mouseX < 150 && mouseY > 450 && mouseY <550 && mousePressed == true) {
+     fill(#D18F26);
+     feed (50,0);
+     feed (-50, -25);
+     feed (0, -70);
+     }
+     //feed blue fish
     
   //Create animation
   float y1 = offset + sin(angle) * scalar;
@@ -266,6 +348,14 @@ void draw () {
       rect(100,600,100,50);    
     }
   
+    //food drop 
+    if (state == "orange main" && mouseX > 50 && mouseX < 150 && mouseY > 450 && mouseY <550 && mousePressed == true) {
+     fill(#D18F26);
+     feed (50,0);
+     feed (-50, -25);
+     feed (0, -70);
+     }
+     //feed purple fish
       
   //Create animation
   float y1 = offset + sin(angle) * scalar;
@@ -304,12 +394,51 @@ void draw () {
    shape(pink2, 262-move,(y2/2)-150, -90,-103);
    shape(pink3, 303-move,(y3/2)-150, -103,-120);
 
-}   else if ( state == "clean") {
-    background(255);
-}   else if (state == "feed") {
-    background(100);
-}   else if (state == "play") {
+}  
+
+  else if ( state == "purple instructions") {
+  //Add bg image with instructions
+  background(100);
+}   
+
+   else if (state == "blue instructions") {
+  //Add bg image with instructions
+  background(100);
+}   
+
+   else if (state == "orange instructions") {
+  //Add bg image with instructions
+  background(100);
+}
+
+    else if (state == "play purple") {
     background(0);
+    currentTime = millis();
+    noCursor();
+    ballbounce();
+    rect(mouseX,550, 100,350); //fish placeholder    
+}   
+    else if (state == "play orange") {
+    background(0);
+    currentTime = millis();
+    noCursor();
+    ballbounce();
+    rect(mouseX,550, 100,350); //fish placeholder
+}   
+    else if (state == "play blue") {
+    background(0);
+    currentTime = millis();
+    noCursor();
+    ballbounce();
+    rect(mouseX,550, 100,350); //fish placeholder
+}
+
+  else if (state == "game over") {
+  background (#FF0900);
+} 
+
+  else if (state == "finish game") {
+  background (#00FF12);
 }
 }
 
@@ -331,12 +460,26 @@ void draw () {
   }  else if (state == "orange main" && mouseX > 50 && mouseX < 150 && mouseY > 40 && mouseY <80){
      state = "title screen";
   }  else if (state == "purple main" && mouseX >50 && mouseX < 150 && mouseY > 550 && mouseY < 650) {
-     state = "clean";
-  }  else if (state == "purple main" && mouseX > 50 && mouseX < 150 && mouseY > 450 && mouseY <550) {
-     state = "feed"; 
+     background (watertank); //clean purple fish by refreshing bg
   }  else if (state == "purple main" && mouseX > 50 && mouseX <150 && mouseY > 350 && mouseY < 450) {
-     state = "play"; 
-  }
+     state = "purple instructions"; //play purple fish
+  }  else if (state == "blue main" && mouseX > 50 && mouseX <150 && mouseY > 350 && mouseY < 450) {
+     state = "blue instructions";  //play blue fish 
+  }  else if (state == "blue main"  && mouseX >50 && mouseX < 150 && mouseY > 550 && mouseY < 650) {
+     background (watertank); //clean blue fish tank
+  }  else if (state == "orange main" && mouseX > 50 && mouseX <150 && mouseY > 350 && mouseY < 450) {
+     state = "orange instructions";  //play orange fish 
+  }  else if (state == "orange main" && mouseX >50 && mouseX < 150 && mouseY > 550 && mouseY < 650) {
+     background (watertank); //clean orange fish tank
+  }  else if (state == "purple instructions") {
+     state = "play purple";
+  }  else if (state == "blue instructions") {
+     state = "play blue";
+  }  else if (state == "orange instructions") {
+     state = "play orange";
+  }  else if (state == "finish game" || state == "game over") {
+     state = "title screen";
+  }     
   }
   
-  
+ 
