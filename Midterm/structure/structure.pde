@@ -24,8 +24,20 @@ float y = -70;
 int timer1= 10000; //10 second timer
 int timer2= 35000; //35 second timer
 int currentTime=0;
+int savedTime=0;
 
 PImage watertank;
+PImage colorselectionbg;
+PImage titlepage;
+PImage instructionsbg;
+PImage pixelbg;
+PImage pixelcoin;
+PImage pixelblue;
+PImage pixelorange;
+PImage pixelpink;
+PImage finishgamebg;
+PImage gameoverbg;
+PImage algaeoverlay;
 
 //Naming processing variables
 float angle = 0.0;
@@ -41,9 +53,9 @@ String state = "title screen";
 
 //creating ball bounce function
 void ballbounce () {
-background(255);
+background(pixelbg);
 fill(0);
-ellipse (x , y, 50, 50);
+image (pixelcoin,x , y, 75, 75);
 
 //movement of ball
 if (y <= fishY) {
@@ -59,12 +71,13 @@ if (y <= -70) {
   x = random(50,750);
 }
 // if you miss one it's game over
-if (y >= 750) {
+if ( y >= 750) {
 state = "game over";
 }  
 // After 30 seconds the game is done
 if (currentTime>timer2) {
   state = "finish game";
+  
 }
 }
 
@@ -101,6 +114,19 @@ void setup () {
   pink1 = loadShape ("pinkhead.svg");
   pink2 = loadShape ("pinkmid.svg");
   pink3 = loadShape ("pinktail.svg");
+  algaeoverlay = loadImage ("algae overlay.png");
+  tint(255, 255);
+  image(algaeoverlay,0,0,800,800);
+  colorselectionbg = loadImage ("colorselectionbg.png");
+  finishgamebg = loadImage ("finishgamebg.png");
+  gameoverbg = loadImage ("gameoverbg.png");
+  instructionsbg = loadImage ("instructionsbg.png");
+  pixelbg = loadImage ("pixelbg.png");
+  pixelblue = loadImage ("pixelblue.png");
+  pixelcoin = loadImage ("pixelcoin.png");
+  pixelorange = loadImage ("pixelorange.png");
+  pixelpink = loadImage ("pixelpink.png");
+  titlepage = loadImage ("titlepage.png");
   font = createFont ("backlash.ttf", 60);
   textFont(font);
   textSize (25);
@@ -112,12 +138,11 @@ void setup () {
 void draw () {
   if (state== "title screen") {
     cursor(HAND);
-    background(0);
+    background(titlepage);
     fill(255);
-    text( "TITLE", width/2, height/3);
-    text("click anywhere to start", width/2,height/2);
+    
   }else if (state == "color select") {
-    background(0);
+    background(colorselectionbg);
     stroke(255);
     rectMode (CENTER);
     fill(#1AB0FF);
@@ -146,6 +171,9 @@ void draw () {
   //Set the background image!
     background(watertank);
     cursor(HAND);
+    
+    //algae effect?
+    
     
     //buttons!
     rectMode (CENTER);
@@ -398,47 +426,49 @@ void draw () {
 
   else if ( state == "purple instructions") {
   //Add bg image with instructions
-  background(100);
+  background(instructionsbg);
 }   
 
    else if (state == "blue instructions") {
   //Add bg image with instructions
-  background(100);
+  background(instructionsbg);
 }   
 
    else if (state == "orange instructions") {
   //Add bg image with instructions
-  background(100);
+  background(instructionsbg);
 }
 
     else if (state == "play purple") {
-    background(0);
+    background(pixelbg);
     currentTime = millis();
     noCursor();
     ballbounce();
-    rect(mouseX,550, 100,350); //fish placeholder    
+    image(pixelpink,mouseX,450,149,351); //fish placeholder    
 }   
     else if (state == "play orange") {
-    background(0);
+    background(pixelbg);
     currentTime = millis();
     noCursor();
     ballbounce();
-    rect(mouseX,550, 100,350); //fish placeholder
+    image(pixelorange,mouseX,450, 149,351); //fish placeholder
 }   
     else if (state == "play blue") {
-    background(0);
+    background(pixelbg);
     currentTime = millis();
     noCursor();
     ballbounce();
-    rect(mouseX,550, 100,350); //fish placeholder
+    image(pixelblue,mouseX,450, 149,351); //fish placeholder
 }
 
   else if (state == "game over") {
-  background (#FF0900);
+  background (gameoverbg);
+  cursor(HAND);
 } 
 
   else if (state == "finish game") {
-  background (#00FF12);
+  background (finishgamebg);
+  cursor(HAND);
 }
 }
 

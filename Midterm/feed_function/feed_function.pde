@@ -8,6 +8,7 @@ void setup () {
 }
 
 void feed (int x, int y) {
+  noStroke ();
  fill( #D18F26, 255);
   if ( foodfall >= 450) {
   fill(#D18F26, 0);
@@ -15,12 +16,10 @@ void feed (int x, int y) {
   fill(#D18F26, 100); 
  }else if (foodfall >= 400) {
   fill (#D18F26, 200); 
- }
-  
+ } 
  float fooddrift = random(495,505);
  ellipse (fooddrift+x,foodfall+y,30,30); 
  foodfall= foodfall +2;
-
  }
  
 
