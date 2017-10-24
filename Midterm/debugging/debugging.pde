@@ -176,7 +176,6 @@ void draw () {
     
     //algae effect?
     if (currentTime-savedTime > timer1) { 
-    savedTime=currentTime; //assign value of currentTime to savedTime
     image(algaeoverlay,0,0,800,800);
     tint(255, 0);
     }
