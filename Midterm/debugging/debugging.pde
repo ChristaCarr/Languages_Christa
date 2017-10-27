@@ -10,6 +10,7 @@ PShape pink2;
 PShape pink3;
 PFont font;
 
+
 //Feed Variables
 float foodfall = -50;
 float fooddrift = random(490,510);
@@ -21,12 +22,16 @@ float fishY = 450; //height of fish png should = 350px
 float y = -70;
 
 //variables for our timer
-int timer1= 10000; //10 second timer
+int timer0= 95000; //95 second timer
+int timer1= 65000; //65 second timer
 int timer2= 35000; //35 second timer
 int currentTime=0;
 int savedTime=0;
 
 PImage watertank;
+PImage algae1;
+PImage algae2;
+PImage algae3;
 PImage colorselectionbg;
 PImage titlepage;
 PImage instructionsbg;
@@ -51,17 +56,27 @@ int move2 = 0;
 //creating game states
 String state = "title screen";
 
-//creating ball bounce function
+//creating coin game function
 void ballbounce () {
+currentTime = millis();
 background(pixelbg);
 fill(0);
 image (pixelcoin,x , y, 75, 75);
+fill(#1A82AA, 40);
+rectMode( CENTER);
+rect( 400, 80, 600, 100);
+fill(255);
+textSize (50);
+text ("CATCH THE FALLING COINS!", 150, 100);
+textSize (25);// reset txtsize
+
 
 //movement of ball
 if (y <= fishY) {
   y=y+6;
 }else if (x >= (mouseX - 75) && x <= (mouseX+ 75)) {
   y=y*-1;
+  coin.play();
 }else {
   y=y+6;
 }
@@ -73,6 +88,7 @@ if (y <= -70) {
 // if you miss one it's game over
 if ( y >= 750) {
 state = "game over";
+y = -70;
 }  
 // After 30 seconds the game is done
 if (currentTime-savedTime>timer2) {
@@ -98,13 +114,32 @@ void feed (int x, int y) {
  }
  float fooddrift = random(497,503);
  ellipse (fooddrift+x,foodfall+y,30,30); 
- foodfall= foodfall +1;
+ foodfall= foodfall +1; 
  }
+
+/////////////sound
+import processing.sound.*;
+SoundFile music;
+SoundFile coin;
+SoundFile clean;
+
 
 
 void setup () { 
+  // Load a soundfile from the /data folder of the sketch and play it back- code from processing.org
+  music = new SoundFile(this, "Good_Old_Neon_-_10_-_Video_Game_SoundtrackMono.wav");
+  music.loop();
+  coin = new SoundFile(this, "CoinSound.wav");
+  clean = new SoundFile(this, "CleanSound.wav");
+ 
+  
+  
+  
  size(800,800);
   watertank = loadImage ("waterbg.png");
+  algae1 = loadImage ("algaebg1.png");
+  algae2 = loadImage ("algaebg2.png");
+  algae3 = loadImage ("algaebg3.png");
   orange1 = loadShape("orangehead.svg");
   orange2 = loadShape ("orangemid.svg");
   orange3 = loadShape ("orangetail.svg");
@@ -114,9 +149,6 @@ void setup () {
   pink1 = loadShape ("pinkhead.svg");
   pink2 = loadShape ("pinkmid.svg");
   pink3 = loadShape ("pinktail.svg");
-  algaeoverlay = loadImage ("algae overlay.png");
-  tint(255, 255);
-  image(algaeoverlay,0,0,800,800);
   colorselectionbg = loadImage ("colorselectionbg.png");
   finishgamebg = loadImage ("finishgamebg.png");
   gameoverbg = loadImage ("gameoverbg.png");
@@ -175,9 +207,12 @@ void draw () {
     cursor(HAND);
     
     //algae effect?
-    if (currentTime-savedTime > timer1) { 
-    image(algaeoverlay,0,0,800,800);
-    tint(255, 0);
+    if (currentTime-savedTime > timer0) { 
+    background(algae3);
+    } else if (currentTime-savedTime>timer1) {
+     background(algae2); 
+    } else if (currentTime- savedTime>timer2) {
+     background(algae1); 
     }
     
     
@@ -203,7 +238,8 @@ void draw () {
      feed (50,0);
      feed (-50, -25);
      feed (0, -70);
-     }
+     
+   }
      //feed purple fish
     
     //rollover
@@ -268,6 +304,16 @@ void draw () {
   //Set the background image!
     background(watertank);
     cursor(HAND);
+    
+    //algae effect?
+    if (currentTime-savedTime > timer0) { 
+    background(algae3);
+    } else if (currentTime-savedTime>timer1) {
+     background(algae2); 
+    } else if (currentTime- savedTime>timer2) {
+     background(algae1); 
+    }
+    
     
      //buttons!
     rectMode (CENTER);
@@ -352,6 +398,17 @@ void draw () {
    //Set the background image!
     background(watertank); 
     cursor(HAND);
+    
+    //algae effect?
+    if (currentTime-savedTime > timer0) { 
+    background(algae3);
+    } else if (currentTime-savedTime>timer1) {
+     background(algae2); 
+    } else if (currentTime- savedTime>timer2) {
+     background(algae1); 
+    }
+    
+    
     
      //buttons!
     rectMode (CENTER);
@@ -452,10 +509,6 @@ void draw () {
     ballbounce();
     image(pixelpink,mouseX,450,149,351); //fish placeholder 
     
-    if (currentTime-savedTime>timer2) {
-    state = "finish game";
-    savedTime=currentTime;
-    }
     
 }   
     else if (state == "play orange") {
@@ -465,11 +518,6 @@ void draw () {
     ballbounce();
     image(pixelorange,mouseX,450, 149,351); //fish placeholder
     
-    if (currentTime-savedTime>timer2) {
-    state = "finish game";
-    savedTime=currentTime;
-    }
-    
     
 }   
     else if (state == "play blue") { 
@@ -478,9 +526,7 @@ void draw () {
     noCursor();
     ballbounce();
     image(pixelblue,mouseX,450, 149,351); //fish placeholder
-    
-    
-    
+   
 }
 
   else if (state == "game over") {
@@ -513,37 +559,42 @@ void draw () {
      state = "title screen";
   }  else if (state == "purple main" && mouseX >50 && mouseX < 150 && mouseY > 550 && mouseY < 650) {
      background (watertank); //clean purple fish by refreshing bg
+     savedTime=currentTime;
+     clean.play();
   }  else if (state == "purple main" && mouseX > 50 && mouseX <150 && mouseY > 350 && mouseY < 450) {
      state = "purple instructions"; //play purple fish
   }  else if (state == "blue main" && mouseX > 50 && mouseX <150 && mouseY > 350 && mouseY < 450) {
      state = "blue instructions";  //play blue fish 
   }  else if (state == "blue main"  && mouseX >50 && mouseX < 150 && mouseY > 550 && mouseY < 650) {
      background (watertank); //clean blue fish tank
+     savedTime=currentTime;
+     clean.play();
   }  else if (state == "orange main" && mouseX > 50 && mouseX <150 && mouseY > 350 && mouseY < 450) {
      state = "orange instructions";  //play orange fish 
   }  else if (state == "orange main" && mouseX >50 && mouseX < 150 && mouseY > 550 && mouseY < 650) {
      background (watertank); //clean orange fish tank
+     savedTime=currentTime;
+     clean.play();
   }  else if (state == "purple instructions") {
      state = "play purple";
-     if (currentTime-savedTime>timer2) {
-     savedTime=currentTime;
-     }
-     
+     savedTime= currentTime;
+          
   }  else if (state == "blue instructions") {
      state = "play blue";
-     if (currentTime-savedTime>timer2) {
-     savedTime=currentTime;
-     } 
+     savedTime =currentTime;
      
   }  else if (state == "orange instructions") {
      state = "play orange";
-     if (currentTime-savedTime>timer2) {
-     savedTime=currentTime;
-     }
+     savedTime = currentTime;
      
   }  else if (state == "finish game" || state == "game over") {
      state = "title screen";
   }     
   }
-  
- 
+
+ void keyPressed() {
+   ///////////to mute all sound press any key!
+    music.stop();
+    coin.stop();
+    clean.stop();
+}
