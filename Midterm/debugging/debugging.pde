@@ -252,6 +252,8 @@ void draw () {
     } else if (mouseX > 50 && mouseX < 150 && mouseY > 450 && mouseY <550) {
       fill (255,100);
       rect(100,500,100,50);
+      fill(255, 200);
+      text("PRESS AND HOLD", 25, 470);
     } else if (mouseX >50 && mouseX < 150 && mouseY > 550 && mouseY < 650) {
       fill (255,100);
       rect(100,600,100,50);    
@@ -340,6 +342,8 @@ void draw () {
     } else if (mouseX > 50 && mouseX < 150 && mouseY > 450 && mouseY <550) {
       fill (255,100);
       rect(100,500,100,50);
+      fill(255, 200);
+      text("PRESS AND HOLD", 25, 470);
     } else if (mouseX >50 && mouseX < 150 && mouseY > 550 && mouseY < 650) {
       fill (255,100);
       rect(100,600,100,50);    
@@ -435,6 +439,8 @@ void draw () {
     } else if (mouseX > 50 && mouseX < 150 && mouseY > 450 && mouseY <550) {
       fill (255,100);
       rect(100,500,100,50);
+      fill(255, 200);
+      text("PRESS AND HOLD", 25, 470);
     } else if (mouseX >50 && mouseX < 150 && mouseY > 550 && mouseY < 650) {
       fill (255,100);
       rect(100,600,100,50);    
