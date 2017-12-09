@@ -29,6 +29,7 @@ PImage lose;
 PImage win;
 PImage ship;
 PImage novel;
+PImage novel2;
 
 //////////////////////////////////////////////////////////typewriter variables!
 String text1 = "Phew, hostiles eliminated...";
@@ -82,7 +83,8 @@ rules = loadImage("Rules.png");
 lose = loadImage("YouLose.png");
 win = loadImage("YouWin.png");
 ship = loadImage ("spaceshp.png");
-novel = loadImage ("VisualNovel.png");
+novel = loadImage ("VisualNovel bg.png");
+novel2 = loadImage ("VisualNovel bg2.png");
 movie = new Movie(this, "Christa Carr Final1.mp4");
 movie.play();
 
@@ -242,7 +244,7 @@ for (int i = 0; i < round2enemies3.length; i++) {
 //////////////////////////////////////////////////////////////////////////////  
 }  else if (state == "skit 2") {
   cursor(CROSS);
-  background(novel);
+  background(novel2);
   fill(255);
   typewriteText2();
   

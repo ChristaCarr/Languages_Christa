@@ -100,9 +100,10 @@ class Enemy {
     }  
       
       if (alive == false && xpos <= 190) {
-      xpos = 185;
+      xpos =185; 
       fill(255);
       state = "skit 1";  //<<<<<<<<<<<<<
+      //xpos = -xpos; didn't work, each row resets individually
       bulletshoot = false;
     }
 
@@ -111,10 +112,11 @@ class Enemy {
       xpos = 185;
       fill(255);
       state = "game over";  //<<<<<<<<<<<<<
+      //xpos = -xpos; didn't work, each row resets individually
       bulletshoot = false;
     }
-    
-   
+      
+ 
   }
 
   /////////////////////////////////////////////////////////////////
